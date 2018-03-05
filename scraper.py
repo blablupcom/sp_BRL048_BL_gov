@@ -39,12 +39,15 @@ def validateFilename(filename):
 
 
 def validateURL(url):
-    import time    
+    import time
     try:
         time.sleep(10)
         r = requests.get(url)
         count = 1
-        while 202 < r.status_code <= 500 and count < 4:
+        while 202 < r.status_code <= 500:
+            time.sleep(10)
+            r = requests.get(url)
+        while r.status_code == 500 and count < 4:
             print ("Attempt {0} - Status code: {1}. Retrying.".format(count, r.status_code))
             count += 1
             time.sleep(10)
